@@ -27,6 +27,30 @@ Returning the resulting file as an `UploadedFile` instance feels a bit Symfony-s
 Symfony-specific contracts. This limits the flexibility a bit, since the end user would be forced into Symfony ecosystem;
 what if those dependencies are unwanted? 
 
+Here's the first attempt at planning out the architecture:
+```mermaid
+classDiagram
+    class Downloader {
+        + AdapterInterface[] $adapters
+        + download(string $url) UploadedFile
+        + registerAdapter(AdapterInterface $adapter) void
+    }
+
+    class AdapterInterface {
+        + supports(string $url) bool
+        + download(string $url) UploadedFile
+    }
+
+    class GoogleDriveAdapter {
+    }
+
+    class OneDriveAdapter {
+    }
+
+    GoogleDriveAdapter <|-- AdapterInterface
+    OneDriveAdapter <|-- AdapterInterface
+```
+
 ### Packages
 #### Stream package
 First guess: `resource` is not a type in PHP, whereas most of the stream interactions are acting on streams. Could this
