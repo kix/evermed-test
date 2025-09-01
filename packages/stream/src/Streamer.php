@@ -11,7 +11,9 @@ final readonly class Streamer
 {
     public function __construct(
         private int $sizeLimit = 10_000_000
-    ) {}
+    )
+    {
+    }
 
     public function streamToFile(ResponseStreamInterface $stream, string $filename): void
     {
@@ -21,27 +23,31 @@ final readonly class Streamer
             throw new FilesystemException('Failed to open file for writing');
         }
 
-        $writtenBytes = 0;
+        $filesize = 0;
 
-        foreach ($stream as $chunk) {
-            try {
+        try {
+            foreach ($stream as $chunk) {
                 $data = $chunk->getContent();
-            } catch (TransportExceptionInterface $e) {
-                throw new NetworkException('Failed to read response', previous: $e);
+
+                if ($filesize > $this->sizeLimit + strlen($data)) {
+                    throw new FilesystemException(sprintf(
+                        'Max file size of %d bytes exceeded',
+                        $this->sizeLimit,
+                    ));
+                }
+
+                $writtenBytes = fwrite($out, $data);
+
+                if ($writtenBytes === false) {
+                    throw new FilesystemException('Failed to write to file');
+                }
+
+                $filesize += $writtenBytes;
             }
-
-            $writtenBytes += strlen($data);
-
-            if ($writtenBytes >= $this->sizeLimit) {
-                throw new FilesystemException(sprintf(
-                    'Max file size of %d bytes exceeded',
-                    $this->sizeLimit,
-                ));
-            }
-
-            fwrite($out, $data);
+        } catch (TransportExceptionInterface $e) {
+            throw new NetworkException('Failed to read response', previous: $e);
+        } finally {
+            fclose($out);
         }
-
-        fclose($out);
     }
 }
