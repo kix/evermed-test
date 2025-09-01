@@ -8,11 +8,13 @@ final class GoogleDriveAdapter implements AdapterInterface
 {
     public function supports(string $url): bool
     {
-        return false;
+        return preg_match('~/d/([^/]+)/~', $url, $m);
     }
 
     public function resolve(string $url): string
     {
-        return '';
+        preg_match('~/d/([^/]+)/~', $url, $m);
+
+        return sprintf('https://drive.google.com/uc?id=%s&export=download', $m[1]);
     }
 }
