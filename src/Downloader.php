@@ -102,7 +102,7 @@ final class Downloader
             ), previous: $e);
         }
 
-        if ($statusCode !== 200) {
+        if ($statusCode < 200 || $statusCode >= 300) {
             throw new BadResponseException(sprintf(
                 'Failed to download file from "%s". Status code: %d',
                 $actualUrl,
