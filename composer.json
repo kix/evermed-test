@@ -1,55 +1,69 @@
 {
-    "name": "coding-task/download",
-    "type": "library",
-    "description": "A library for downloading assets from various sources.",
-    "homepage": "https://www.johndoe.com",
-    "license": "proprietary",
-    "authors": [],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "packages/mime"
-        },
-        {
-            "type": "path",
-            "url": "packages/stream"
-        }
-    ],
-    "require": {
-        "php": "^8.4",
-        "ext-hash": "*",
-        "psr/http-client": "^1.0",
-        "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0",
-        "symfony/config": "^5.0|^6.0",
-        "symfony/dependency-injection": "^5.0|^6.0",
-        "symfony/http-client-contracts": "^2.0|^3.0",
-        "symfony/http-foundation": "^5.0|^6.0",
-        "symfony/http-kernel": "^5.0|^6.0",
-        "symfony/mime": "^5.0|^6.0",
-        "symfony/http-client": "^5.0|^6.0",
-        "packages/mime": "*",
-        "packages/stream": "*",
-        "cardinalby/content-disposition": "dev-master"
+  "name": "coding-task/download",
+  "type": "library",
+  "description": "A library for downloading assets from various sources.",
+  "homepage": "https://www.johndoe.com",
+  "license": "proprietary",
+  "authors": [],
+  "repositories": [
+    {
+      "type": "path",
+      "url": "packages/mime"
     },
-    "suggest": {
-        "nyholm/psr7": "PSR-7 implementation"
-    },
-  "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {
-            "CodingTask\\Download\\": "src/"
-        },
-        "files": [
-            "src/functions.php"
-        ]
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "CodingTask\\Download\\Tests\\": "tests/"
-      }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^12.4@dev"
+    {
+      "type": "path",
+      "url": "packages/stream"
     }
+  ],
+  "require": {
+    "php": "^8.4",
+    "ext-hash": "*",
+    "psr/http-client": "^1.0",
+    "psr/http-factory": "^1.0",
+    "psr/http-message": "^1.0",
+    "symfony/config": "^5.0|^6.0",
+    "symfony/dependency-injection": "^5.0|^6.0",
+    "symfony/http-client-contracts": "^2.0|^3.0",
+    "symfony/http-foundation": "^5.0|^6.0",
+    "symfony/http-kernel": "^5.0|^6.0",
+    "symfony/mime": "^5.0|^6.0",
+    "symfony/http-client": "^5.0|^6.0",
+    "packages/mime": "*",
+    "packages/stream": "*",
+    "cardinalby/content-disposition": "dev-master"
+  },
+  "suggest": {
+    "nyholm/psr7": "PSR-7 implementation"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "composer install --working-dir=packages/mime",
+      "composer install --working-dir=packages/stream"
+    ],
+    "clean":  [
+      "rm -rf vendor/",
+      "rm -rf packages/mime/vendor/",
+      "rm -rf packages/stream/vendor/"
+    ],
+    "test": [
+      "vendor/bin/phpunit"
+    ]
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "CodingTask\\Download\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CodingTask\\Download\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.4@dev"
+  }
 }
