@@ -56,6 +56,7 @@ $downloader = new \CodingTask\Download\Downloader(
  - [X] Implement OneDrive adapter
  - [ ] Require `symfony/mime` in `packages/mime`
  - [ ] Add some functional tests?
+ - [ ] Extract temporary file path handling into a separate class
  - [X] ~~Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?~~
  - [X] Instantiate `Downloader` with a prefilled array of known adapters
  - [X] ~~Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)~~
