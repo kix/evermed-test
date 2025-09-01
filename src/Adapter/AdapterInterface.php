@@ -9,5 +9,7 @@ namespace CodingTask\Download\Adapter;
  */
 interface AdapterInterface
 {
+    public function supports(string $url): bool;
+
     public function resolve(string $url): string;
 }
