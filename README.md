@@ -32,6 +32,9 @@ what if those dependencies are unwanted?
 First guess: `resource` is not a type in PHP, whereas most of the stream interactions are acting on streams. Could this
 be a way to harden types?
 
+Idea: the Stream package is supposed to make sure we can write a response stream of the file being downloaded into the
+local filesystem.
+
 #### MIME package
 Symfony's `UploadedFile` class requires a MIME type to instantiate. If we're downloading something, we need to figure 
 out the MIME type that needs to be passed in.
@@ -41,3 +44,5 @@ out the MIME type that needs to be passed in.
 * Symfony's `UploadedFile` class docblock clearly suggests that the class is intended for "files uploaded through a 
   form". Feels like maybe we're misusing it?
 * Not quite clear what do I need `functions.php` for.
+* We don't want to waste memory on large files. Makes sense to handle those in chunks; streaming a response into a 
+  temporary file makes a lot of sense.
