@@ -11,6 +11,7 @@ use CodingTask\Download\Tests\Stub\ExampleAdapter;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\HttpClient\MockHttpClient;
 
 final class DownloaderTest extends TestCase
 {
@@ -45,7 +46,7 @@ final class DownloaderTest extends TestCase
         $downloader = new Downloader([
             0 => $adapterNotToBeCalled,
             10 => $adapterToBeCalled,
-        ]);
+        ], httpClient: new MockHttpClient());
 
         $downloader->download('https://example.com');
     }
