@@ -11,7 +11,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 final readonly class FilenameResolver implements FilenameResolverInterface
 {
     const string HEADER_CONTENT_DISPOSITION = 'content-disposition';
-    const string FILE_PREFIX = 'downloaded_';
+    const string DEFAULT_FILE_PREFIX = 'downloaded_';
+
+    public function __construct(
+        private string $filePrefix = self::DEFAULT_FILE_PREFIX,
+    ) {}
 
     public function resolveFilename(ResponseInterface $response, string $fallbackUrl): string
     {
@@ -24,6 +28,6 @@ final readonly class FilenameResolver implements FilenameResolverInterface
             $filename = $path ? basename($path) : null;
         }
 
-        return $filename ?: uniqid(self::FILE_PREFIX, true);
+        return $filename ?: uniqid($this->filePrefix, true);
     }
 }

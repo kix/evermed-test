@@ -66,14 +66,19 @@ final class Downloader
         }
     }
 
-    public static function create(): self
+    public static function create(DownloaderConfig $config = new DownloaderConfig()): self
     {
         return new self(
             [
                 new GoogleDriveAdapter(),
                 new OneDriveAdapter(),
                 new DirectHttpAdapter(),
-            ]
+            ],
+            HttpClient::create([
+                'timeout' => $config->timeout,
+            ]),
+            new Streamer(sizeLimit: $config->fileSizeLimit),
+            filenameResolver: new FilenameResolver($config->filenamePrefix),
         );
     }
 
