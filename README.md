@@ -91,4 +91,5 @@ out the MIME type that needs to be passed in.
   temporary file makes a lot of sense.
 * An adapter supporting basic HTTP downloads will always match all URLs starting with `http(s)`. Thus, we need to add a
   provider priority mechanism, so that a basic HTTP adapter becomes a catch-all (except probably other protocols with 
-  their specific schemas such as FTP/SFTP/WebDav/...) 
+  their specific schemas such as FTP/SFTP/WebDav/...)
+* We also probably need to make sure redirects are handled properly
