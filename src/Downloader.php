@@ -9,7 +9,11 @@ use CodingTask\Download\Adapter\DirectHttpAdapter;
 use CodingTask\Download\Adapter\GoogleDriveAdapter;
 use CodingTask\Download\Adapter\OneDriveAdapter;
 use CodingTask\Download\Exception\UnsupportedUrlException;
+use CodingTask\Mime\MimeGuesser;
+use CodingTask\Stream\Streamer;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Handles downloading files from various sources.
@@ -31,9 +35,22 @@ final class Downloader
      *
      * @param array<int, AdapterInterface> $adapters
      */
-    public function __construct(array $adapters)
-    {
+    public function __construct(
+        array $adapters,
+        private ?HttpClientInterface $httpClient = null,
+        private ?Streamer $streamer = new Streamer(),
+        private ?MimeGuesser $mimeGuesser = new MimeGuesser(),
+        private ?string $tmpPath = null,
+    ) {
         krsort($adapters, SORT_NUMERIC);
+
+        if ($this->httpClient === null) {
+            $this->httpClient = HttpClient::create();
+        }
+
+        if ($this->tmpPath === null) {
+            $this->tmpPath = sys_get_temp_dir();
+        }
 
         foreach ($adapters as $priority => $adapter) {
             $this->registerAdapter($priority, $adapter);
@@ -42,11 +59,13 @@ final class Downloader
 
     public static function create(): self
     {
-        return new self([
-            new GoogleDriveAdapter(),
-            new OneDriveAdapter(),
-            new DirectHttpAdapter(),
-        ]);
+        return new self(
+            [
+                new GoogleDriveAdapter(),
+                new OneDriveAdapter(),
+                new DirectHttpAdapter(),
+            ]
+        );
     }
 
     private function registerAdapter(int $priority, AdapterInterface $adapter): void
@@ -56,11 +75,22 @@ final class Downloader
 
     public function download(string $url): UploadedFile
     {
+        $actualUrl = $this->resolveUrl($url);
+
+        $response = $this->httpClient->request('GET', $actualUrl);
+        $stream = $this->httpClient->stream($response);
+        $tmpFilename = $this->tmpPath . '/' . uniqid('coding-task-download-', true);
+        $this->streamer->streamToFile($stream, $tmpFilename);
+        $mime = $this->mimeGuesser->guess($tmpFilename);
+
+        return new UploadedFile($tmpFilename, 'test', $mime);
+    }
+
+    private function resolveUrl(string $url): string
+    {
         foreach ($this->adapters as $adapter) {
             if ($adapter->supports($url)) {
-                $resolvedUrl = $adapter->resolve($url);
-
-                return new UploadedFile(__FILE__, 'test');
+                return $adapter->resolve($url);
             }
         }
 
