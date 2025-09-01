@@ -70,3 +70,6 @@ out the MIME type that needs to be passed in.
 * Not quite clear what do I need `functions.php` for.
 * We don't want to waste memory on large files. Makes sense to handle those in chunks; streaming a response into a 
   temporary file makes a lot of sense.
+* An adapter supporting basic HTTP downloads will always match all URLs starting with `http(s)`. Thus, we need to add a
+  provider priority mechanism, so that a basic HTTP adapter becomes a catch-all (except probably other protocols with 
+  their specific schemas such as FTP/SFTP/WebDav/...) 
