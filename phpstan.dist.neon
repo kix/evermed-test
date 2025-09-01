@@ -1,0 +1,14 @@
+# To rebuild the baseline, run:
+# vendor/bin/phpstan analyse -c phpstan.dist.neon --generate-baseline=phpstan-baseline.neon
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 9
+    paths:
+        - src/
+        - tests/
+        - packages/mime/src/
+        - packages/mime/tests/
+        - packages/stream/src/
+        - packages/stream/tests/

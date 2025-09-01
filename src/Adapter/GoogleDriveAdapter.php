@@ -8,7 +8,9 @@ final class GoogleDriveAdapter implements AdapterInterface
 {
     public function supports(string $url): bool
     {
-        return preg_match('~/d/([^/]+)/~', $url, $m);
+        preg_match('~/d/([^/]+)/~', $url, $m);
+
+        return array_key_exists(1, $m);
     }
 
     public function resolve(string $url): string

@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method CodingTask\\Download\\FilenameResolver\\FilenameResolver\:\:resolveFilename\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/FilenameResolver/FilenameResolver.php

@@ -19,8 +19,8 @@ final readonly class FilenameResolver implements FilenameResolverInterface
         } catch (InvalidArgumentException $e) {
             $path = parse_url($fallbackUrl, PHP_URL_PATH);
             $filename = $path ? basename($path) : null;
-
-            return $filename ?: uniqid('downloaded_', true);
         }
+
+        return $filename ?: uniqid('downloaded_', true);
     }
 }

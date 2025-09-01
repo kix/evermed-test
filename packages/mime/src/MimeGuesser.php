@@ -17,6 +17,16 @@ final readonly class MimeGuesser
             ));
         }
 
-        return new MimeTypes()->guessMimeType($filename);
+
+        $mimeType = new MimeTypes()->guessMimeType($filename);
+
+        if ($mimeType === null) {
+            throw new UnknownMimeTypeException(sprintf(
+                'Could not guess mime type for file "%s"',
+                $filename
+            ));
+        }
+
+        return $mimeType;
     }
 }

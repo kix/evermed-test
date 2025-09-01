@@ -29,6 +29,8 @@ final class Downloader
      */
     private array $adapters;
 
+    private HttpClientInterface $httpClient;
+
     /**
      * Usage:
      * Either pass an indexed array where the index is an integer, where the higher the index, the sooner the adapter is
@@ -38,17 +40,19 @@ final class Downloader
      */
     public function __construct(
         array $adapters,
-        private ?HttpClientInterface $httpClient = null,
-        private ?Streamer $streamer = new Streamer(),
-        private ?MimeGuesser $mimeGuesser = new MimeGuesser(),
-        private ?FilenameResolver $filenameResolver = new FilenameResolver(),
+        ?HttpClientInterface $httpClient = null,
+        private Streamer $streamer = new Streamer(),
+        private MimeGuesser $mimeGuesser = new MimeGuesser(),
+        private FilenameResolver $filenameResolver = new FilenameResolver(),
         private ?string $tmpPath = null,
     ) {
         krsort($adapters, SORT_NUMERIC);
 
-        if ($this->httpClient === null) {
-            $this->httpClient = HttpClient::create();
+        if ($httpClient === null) {
+            $httpClient = HttpClient::create();
         }
+
+        $this->httpClient = $httpClient;
 
         if ($this->tmpPath === null) {
             $this->tmpPath = sys_get_temp_dir();
