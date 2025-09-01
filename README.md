@@ -26,3 +26,9 @@ method for checking whether a given URL matches the implementation, and a method
 Returning the resulting file as an `UploadedFile` instance feels a bit Symfony-specific, as well as requiring 
 Symfony-specific contracts. This limits the flexibility a bit, since the end user would be forced into Symfony ecosystem;
 what if those dependencies are unwanted? 
+
+## Sidenotes
+
+* Symfony's `UploadedFile` class docblock clearly suggests that the class is intended for "files uploaded through a 
+  form". Feels like maybe we're misusing it?
+* Not quite clear what do I need `functions.php` for.
