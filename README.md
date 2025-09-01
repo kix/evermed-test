@@ -1,19 +1,18 @@
 # Explanation document
 ## Task list
  - [X] Plan out the architecture
- - [ ] Map out the flow (what happens when?)
+ - [X] Map out the flow (what happens when?)
  - [ ] Implement stream package
  - [ ] Implement base architecture
- - [ ] Figure out what MIME package is for
+ - [X] Figure out what MIME package is for
  - [ ] Implement plain HTTP/HTTPS adapter
  - [ ] Implement Google Drive adapter
  - [ ] Implement OneDrive adapter
  - [ ] Add some functional tests?
  - [ ] Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?
- - [ ] Instantiate `Downloader` with a prefilled array of known adapters
+ - [X] Instantiate `Downloader` with a prefilled array of known adapters
  - [ ] Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)
  - [ ] Support for asynchronous interactions (React-PHP event loop, for example).
- - [ ] Consider moving the `ClientInterface` argument from `AdapterInterface#download`
 
 ## Architecture Overview
 
@@ -93,3 +92,4 @@ out the MIME type that needs to be passed in.
   provider priority mechanism, so that a basic HTTP adapter becomes a catch-all (except probably other protocols with 
   their specific schemas such as FTP/SFTP/WebDav/...)
 * We also probably need to make sure redirects are handled properly
+* Do we want `php-http`'s client discovery mechanism?
