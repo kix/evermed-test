@@ -59,6 +59,8 @@ classDiagram
   * throwing an `UnsupportedUrlException` when there's no adapter found 
   * or calling the matched implementation of an `AdapterInterface`
 * `Downloader` calls `AdapterInterface::download()` with the specified URL
+* A specific adapter handles the download, returning a temporary file path
+* The MIME type is guessed using `symfony/mime`
 * `Downloader::download()` returns an instance of `UploadedFile` with the path, the original filename and the MIME type
 
 ### Packages
