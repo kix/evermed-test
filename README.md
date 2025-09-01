@@ -1,6 +1,7 @@
 # Explanation document
 ## Task list
  - [X] Plan out the architecture
+ - [ ] Map out the flow (what happens when?)
  - [ ] Implement stream package
  - [ ] Implement base architecture
  - [ ] Figure out what MIME package is for
@@ -50,6 +51,9 @@ classDiagram
     GoogleDriveAdapter <|-- AdapterInterface
     OneDriveAdapter <|-- AdapterInterface
 ```
+
+### Overall flow
+
 
 ### Packages
 #### Stream package
