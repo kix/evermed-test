@@ -58,9 +58,15 @@ classDiagram
 * `Downloader` scans through the available adapters
   * throwing an `UnsupportedUrlException` when there's no adapter found 
   * or calling the matched implementation of an `AdapterInterface`
-* `Downloader` calls `AdapterInterface::download()` with the specified URL
-* A specific adapter handles the download, returning a temporary file path
-* The MIME type is guessed using `symfony/mime`
+* `Downloader` calls `AdapterInterface::resolve()` with the specified URL
+* The adapter discovers the actual URL of the file
+* `Downloader` uses an HTTP client to handle the download and save it to a temporary file
+  * Since we want to stay within memory limits, `Downloader` passes the HTTP client's streamed response through the 
+    stream package implementation, which writes the response into a temporary file in chunks
+  * We also probably want to track disk usage and disallow downloading large files
+* We somehow persist the original filename
+* We also somehow persist the MIME type
+  * If the MIME type is not provided by the server, we can guess it using `symfony/mime`
 * `Downloader::download()` returns an instance of `UploadedFile` with the path, the original filename and the MIME type
 
 ### Packages
