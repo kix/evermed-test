@@ -8,12 +8,15 @@ use CodingTask\Download\Adapter\AdapterInterface;
 use CodingTask\Download\Adapter\DirectHttpAdapter;
 use CodingTask\Download\Adapter\GoogleDriveAdapter;
 use CodingTask\Download\Adapter\OneDriveAdapter;
+use CodingTask\Download\Exception\BadResponseException;
+use CodingTask\Download\Exception\RequestFailedException;
 use CodingTask\Download\Exception\UnsupportedUrlException;
 use CodingTask\Download\FilenameResolver\FilenameResolver;
 use CodingTask\Mime\MimeGuesser;
 use CodingTask\Stream\Streamer;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -83,7 +86,25 @@ final class Downloader
     {
         $actualUrl = $this->resolveUrl($url);
 
-        $response = $this->httpClient->request('GET', $actualUrl);
+        try {
+            $response = $this->httpClient->request('GET', $actualUrl);
+            $statusCode = $response->getStatusCode();
+        } catch (TransportExceptionInterface $e) {
+            throw new RequestFailedException(sprintf(
+                'Failed to download file from "%s". Error: %s',
+                $actualUrl,
+                $e->getMessage()
+            ), previous: $e);
+        }
+
+        if ($statusCode !== 200) {
+            throw new BadResponseException(sprintf(
+                'Failed to download file from "%s". Status code: %d',
+                $actualUrl,
+                $statusCode
+            ));
+        }
+
         $stream = $this->httpClient->stream($response);
         $tmpFilename = $this->tmpPath . '/' . uniqid('coding-task-download-', true);
         $this->streamer->streamToFile($stream, $tmpFilename);
