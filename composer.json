@@ -34,7 +34,7 @@
     "suggest": {
         "nyholm/psr7": "PSR-7 implementation"
     },
-    "minimum-stability": "dev",
+  "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "CodingTask\\Download\\": "src/"
@@ -42,5 +42,10 @@
         "files": [
             "src/functions.php"
         ]
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "CodingTask\\Download\\Test\\": "tests/"
+      }
     }
 }
