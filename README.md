@@ -27,6 +27,15 @@ Returning the resulting file as an `UploadedFile` instance feels a bit Symfony-s
 Symfony-specific contracts. This limits the flexibility a bit, since the end user would be forced into Symfony ecosystem;
 what if those dependencies are unwanted? 
 
+### Packages
+#### Stream package
+First guess: `resource` is not a type in PHP, whereas most of the stream interactions are acting on streams. Could this
+be a way to harden types?
+
+#### MIME package
+Symfony's `UploadedFile` class requires a MIME type to instantiate. If we're downloading something, we need to figure 
+out the MIME type that needs to be passed in.
+
 ## Sidenotes
 
 * Symfony's `UploadedFile` class docblock clearly suggests that the class is intended for "files uploaded through a 
