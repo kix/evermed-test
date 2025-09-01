@@ -43,6 +43,8 @@ final class Downloader
         foreach ($this->adapters as $adapter) {
             if ($adapter->supports($url)) {
                 $resolvedUrl = $adapter->resolve($url);
+
+                return new UploadedFile(__FILE__, 'test');
             }
         }
 

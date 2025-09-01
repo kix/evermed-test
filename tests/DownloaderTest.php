@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CodingTask\Download\Tests;
 
+use CodingTask\Download\Adapter\AdapterInterface;
 use CodingTask\Download\Downloader;
 use CodingTask\Download\Exception\UnsupportedUrlException;
 use CodingTask\Download\Tests\Stub\ExampleAdapter;
@@ -23,5 +24,28 @@ final class DownloaderTest extends TestCase
         $this->expectExceptionMessage('No adapter supports the URL "https://drive.google.com/file/d/1234567890/view".');
 
         $downloader->download('https://drive.google.com/file/d/1234567890/view');
+    }
+
+    #[Test]
+    public function itCallsHighestPriorityAdapterFirst(): void
+    {
+        $adapterToBeCalled = $this->getMockBuilder(AdapterInterface::class)->getMock();
+        $adapterToBeCalled
+            ->expects($this->once())
+            ->method('supports')
+            ->with('https://example.com')
+            ->willReturn(true);
+
+        $adapterNotToBeCalled = $this->getMockBuilder(AdapterInterface::class)->getMock();
+        $adapterNotToBeCalled
+            ->expects($this->never())
+            ->method('supports');
+
+        $downloader = new Downloader([
+            0 => $adapterNotToBeCalled,
+            10 => $adapterToBeCalled,
+        ]);
+
+        $downloader->download('https://example.com');
     }
 }
