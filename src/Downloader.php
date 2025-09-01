@@ -82,8 +82,9 @@ final class Downloader
         $tmpFilename = $this->tmpPath . '/' . uniqid('coding-task-download-', true);
         $this->streamer->streamToFile($stream, $tmpFilename);
         $mime = $this->mimeGuesser->guess($tmpFilename);
+        $originalName = FilenameResolver::resolveFilename($response, $url);
 
-        return new UploadedFile($tmpFilename, 'test', $mime);
+        return new UploadedFile($tmpFilename, $originalName, $mime);
     }
 
     private function resolveUrl(string $url): string

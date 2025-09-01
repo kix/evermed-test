@@ -8,6 +8,7 @@ use CodingTask\Download\Adapter\AdapterInterface;
 use CodingTask\Download\Downloader;
 use CodingTask\Download\Exception\UnsupportedUrlException;
 use CodingTask\Download\Tests\Stub\ExampleAdapter;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -47,5 +48,20 @@ final class DownloaderTest extends TestCase
         ]);
 
         $downloader->download('https://example.com');
+    }
+
+    #[Test]
+    #[Group('integration')]
+    public function itDownloadsFilesViaHttp(): void
+    {
+        $downloader = Downloader::create();
+        $file = $downloader->download('https://github.com/symfony/symfony/raw/refs/heads/7.4/README.md');
+
+        static::assertEquals('text/html', $file->getMimeType());
+        static::assertEquals('README.md', $file->getClientOriginalName());;
+        static::assertStringContainsString(
+            '[Symfony][1] is a **PHP framework** for web and console applications',
+            $file->getContent()
+        );
     }
 }

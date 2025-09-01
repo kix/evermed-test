@@ -29,7 +29,8 @@
         "symfony/mime": "^5.0|^6.0",
         "symfony/http-client": "^5.0|^6.0",
         "packages/mime": "*",
-        "packages/stream": "*"
+        "packages/stream": "*",
+        "cardinalby/content-disposition": "dev-master"
     },
     "suggest": {
         "nyholm/psr7": "PSR-7 implementation"
