@@ -10,10 +10,13 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final readonly class FilenameResolver implements FilenameResolverInterface
 {
+    const string HEADER_CONTENT_DISPOSITION = 'content-disposition';
+    const string FILE_PREFIX = 'downloaded_';
+
     public function resolveFilename(ResponseInterface $response, string $fallbackUrl): string
     {
         try {
-            $disposition = ContentDisposition::parse($response->getHeaders(false)['content-disposition'][0] ?? '');
+            $disposition = ContentDisposition::parse($response->getHeaders(false)[self::HEADER_CONTENT_DISPOSITION][0] ?? '');
 
             return $disposition->getFilename();
         } catch (InvalidArgumentException $e) {
@@ -21,6 +24,6 @@ final readonly class FilenameResolver implements FilenameResolverInterface
             $filename = $path ? basename($path) : null;
         }
 
-        return $filename ?: uniqid('downloaded_', true);
+        return $filename ?: uniqid(self::FILE_PREFIX, true);
     }
 }
