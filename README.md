@@ -52,13 +52,14 @@ $downloader = new \CodingTask\Download\Downloader(
  - [X] Figure out what MIME package is for
  - [X] Implement plain HTTP/HTTPS adapter
  - [X] Implement Google Drive adapter
- - [ ] Add documentation
- - [ ] Implement OneDrive adapter
+ - [X] Add documentation
+ - [X] Implement OneDrive adapter
+ - [ ] Require `symfony/mime` in `packages/mime`
  - [ ] Add some functional tests?
- - [ ] ~~Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?~~
+ - [X] ~~Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?~~
  - [X] Instantiate `Downloader` with a prefilled array of known adapters
- - [ ] ~~Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)~~
- - [ ] ~~Support for asynchronous interactions (React-PHP event loop, for example).~~
+ - [X] ~~Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)~~
+ - [X] ~~Support for asynchronous interactions (React-PHP event loop, for example).~~
 
 ## Architecture Overview
 
