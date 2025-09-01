@@ -44,6 +44,18 @@ $downloader = new \CodingTask\Download\Downloader(
 );
 ```
 
+To set up file size limit, request timeout and filename prefix, use the `DownloaderConfig` class:
+```php
+use CodingTask\Download\Downloader;
+use CodingTask\Download\DownloaderConfig;
+
+Downloader::create(new DownloaderConfig(
+    fileSizeLimit: 1024 * 1024 * 10, // 10 MB
+    timeout: 10, // 10 seconds
+    filenamePrefix: 'my-file-',
+));
+```
+
 ## Task list
  - [X] Plan out the architecture
  - [X] Map out the flow (what happens when?)
@@ -59,8 +71,8 @@ $downloader = new \CodingTask\Download\Downloader(
  - [ ] Extract temporary file path handling into a separate class
  - [ ] Handle third-party services' liveness (https://status.dropbox.com/, https://www.google.com/appsstatus/dashboard/)
  - [ ] Implement better temporary file handling (now those are stored indefinitely long)
- - [ ] Handle file size limits
- - [ ] Add DI to MimeGuesser
+ - [X] Handle file size limits
+ - [X] Add DI to MimeGuesser
  - [X] ~~Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?~~
  - [X] Instantiate `Downloader` with a prefilled array of known adapters
  - [X] ~~Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)~~
