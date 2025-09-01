@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace CodingTask\Mime;
 
 use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Mime\MimeTypesInterface;
 
 final readonly class MimeGuesser
 {
+    public function __construct(
+        private MimeTypesInterface $mimeTypes = new MimeTypes(),
+    ) {}
+
     public function guess(string $filename): string
     {
         if (!file_exists($filename)) {
@@ -18,7 +23,7 @@ final readonly class MimeGuesser
         }
 
 
-        $mimeType = new MimeTypes()->guessMimeType($filename);
+        $mimeType = $this->mimeTypes->guessMimeType($filename);
 
         if ($mimeType === null) {
             throw new UnknownMimeTypeException(sprintf(
