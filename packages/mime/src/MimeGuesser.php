@@ -22,7 +22,6 @@ final readonly class MimeGuesser
             ));
         }
 
-
         $mimeType = $this->mimeTypes->guessMimeType($filename);
 
         if ($mimeType === null) {
