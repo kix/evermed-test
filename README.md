@@ -1,8 +1,8 @@
 # Explanation document
 ## Task list
- - [ ] Plan out the architecture
- - [ ] Implement base architecture
+ - [X] Plan out the architecture
  - [ ] Implement stream package
+ - [ ] Implement base architecture
  - [ ] Figure out what MIME package is for
  - [ ] Implement plain HTTP/HTTPS adapter
  - [ ] Implement Google Drive adapter
