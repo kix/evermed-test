@@ -1,18 +1,64 @@
 # Explanation document
+## Usage
+To handle file downloads from Google Drive, OneDrive or plain HTTP/HTTPS URLs, use the `Downloader` class as follows:
+```php
+$downloader = Downloader::create();
+
+// Download via plain HTTP link
+$file = $downloader->download('https://raw.githubusercontent.com/symfony/symfony/refs/heads/7.4/README.md');
+// Download from Google Drive (copy the share link on Google Drive and make sure the link is public):
+$file = $downloader->download('https://drive.google.com/file/d/1Dj5OdY2CCw0uMLO2WnEGubvNp0evtgwu/view?usp=drive_link');
+// Download from OneDrive:
+$file = $downloader->download('https://1drv.ms/b/c/8f4d753b56a799fe/ESKrqlN0ImdOrNp7nOV2EBMBzzMso6e1aE_RXldm19QxLg?e=0Xy1zJ');
+```
+Here, the returned file is an instance of [`Symfony\Component\HttpFoundation\File\UploadedFile`](https://github.com/symfony/symfony/blob/7.4/src/Symfony/Component/HttpFoundation/File/UploadedFile.php).
+
+To implement your own adapter, make a new `AdapterInterface`:
+```php
+class MyAdapter implements AdapterInterface
+{
+    public function supports(string $url): bool
+    {
+        // TODO: Check that the URL is supported by your provider
+            
+        return true;
+    }
+    
+    public function resolve(string $url): string
+    {
+        // TODO: Transform the URL into the actual file URL
+        
+        return $url;
+    }
+}
+```
+Then register it with the `Downloader` instance via the constructor method:
+```php
+$downloader = new \CodingTask\Download\Downloader(
+    [
+        new GoogleDriveAdapter(),
+        new OneDriveAdapter(),
+        new DirectHttpAdapter(),
+        new MyAdapter(),
+    ]
+);
+```
+
 ## Task list
  - [X] Plan out the architecture
  - [X] Map out the flow (what happens when?)
- - [ ] Implement stream package
- - [ ] Implement base architecture
+ - [X] Implement stream package
+ - [X] Implement base architecture
  - [X] Figure out what MIME package is for
- - [ ] Implement plain HTTP/HTTPS adapter
- - [ ] Implement Google Drive adapter
+ - [X] Implement plain HTTP/HTTPS adapter
+ - [X] Implement Google Drive adapter
+ - [ ] Add documentation
  - [ ] Implement OneDrive adapter
  - [ ] Add some functional tests?
- - [ ] Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?
+ - [ ] ~~Extract a wrapper for returning Symfony's `UploadedFile` instances somehow?~~
  - [X] Instantiate `Downloader` with a prefilled array of known adapters
- - [ ] Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)
- - [ ] Support for asynchronous interactions (React-PHP event loop, for example).
+ - [ ] ~~Split the library into separate packages per client (e.g. separate package for Google Drive, separate one for OneDrive)~~
+ - [ ] ~~Support for asynchronous interactions (React-PHP event loop, for example).~~
 
 ## Architecture Overview
 
