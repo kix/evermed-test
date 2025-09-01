@@ -9,6 +9,7 @@ use CodingTask\Download\Adapter\DirectHttpAdapter;
 use CodingTask\Download\Adapter\GoogleDriveAdapter;
 use CodingTask\Download\Adapter\OneDriveAdapter;
 use CodingTask\Download\Exception\UnsupportedUrlException;
+use CodingTask\Download\FilenameResolver\FilenameResolver;
 use CodingTask\Mime\MimeGuesser;
 use CodingTask\Stream\Streamer;
 use Symfony\Component\HttpClient\HttpClient;
@@ -40,6 +41,7 @@ final class Downloader
         private ?HttpClientInterface $httpClient = null,
         private ?Streamer $streamer = new Streamer(),
         private ?MimeGuesser $mimeGuesser = new MimeGuesser(),
+        private ?FilenameResolver $filenameResolver = new FilenameResolver(),
         private ?string $tmpPath = null,
     ) {
         krsort($adapters, SORT_NUMERIC);
@@ -82,7 +84,7 @@ final class Downloader
         $tmpFilename = $this->tmpPath . '/' . uniqid('coding-task-download-', true);
         $this->streamer->streamToFile($stream, $tmpFilename);
         $mime = $this->mimeGuesser->guess($tmpFilename);
-        $originalName = FilenameResolver::resolveFilename($response, $url);
+        $originalName = $this->filenameResolver->resolveFilename($response, $url);
 
         return new UploadedFile($tmpFilename, $originalName, $mime);
     }
