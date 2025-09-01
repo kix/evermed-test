@@ -4,7 +4,12 @@
   "description": "A library for downloading assets from various sources.",
   "homepage": "https://github.com/kix/evermed-test",
   "license": "proprietary",
-  "authors": [],
+  "authors": [
+    {
+      "name": "Stepan Anchugov",
+      "email": "kixxx1@gmail.com"
+    }
+  ],
   "repositories": [
     {
       "type": "path",
