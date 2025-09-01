@@ -54,6 +54,7 @@ classDiagram
 
 ### Overall flow
 * `Downloader` is instantiated with adapters passed in via the constructor
+* Or, the `Downloader` is created with a default set of adapters via the `create()` static method
 * A URL is passed to the `Downloader`'s `download()` method
 * `Downloader` scans through the available adapters
   * throwing an `UnsupportedUrlException` when there's no adapter found 

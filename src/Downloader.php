@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CodingTask\Download;
 
 use CodingTask\Download\Adapter\AdapterInterface;
+use CodingTask\Download\Adapter\DirectHttpAdapter;
+use CodingTask\Download\Adapter\GoogleDriveAdapter;
+use CodingTask\Download\Adapter\OneDriveAdapter;
 use CodingTask\Download\Exception\UnsupportedUrlException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -22,6 +25,10 @@ final class Downloader
     private array $adapters;
 
     /**
+     * Usage:
+     * Either pass an indexed array where the index is an integer, where the higher the index, the sooner the adapter is
+     * tried, or pass the adapters as an unindexed array where the further the adapter is, the sooner it is tried.
+     *
      * @param array<int, AdapterInterface> $adapters
      */
     public function __construct(array $adapters)
@@ -31,6 +38,15 @@ final class Downloader
         foreach ($adapters as $priority => $adapter) {
             $this->registerAdapter($priority, $adapter);
         }
+    }
+
+    public static function create(): self
+    {
+        return new self([
+            new GoogleDriveAdapter(),
+            new OneDriveAdapter(),
+            new DirectHttpAdapter(),
+        ]);
     }
 
     private function registerAdapter(int $priority, AdapterInterface $adapter): void
