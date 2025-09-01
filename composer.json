@@ -45,7 +45,10 @@
     },
     "autoload-dev": {
       "psr-4": {
-        "CodingTask\\Download\\Test\\": "tests/"
+        "CodingTask\\Download\\Tests\\": "tests/"
       }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.4@dev"
     }
 }
