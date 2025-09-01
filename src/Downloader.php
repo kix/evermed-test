@@ -82,11 +82,6 @@ final class Downloader
         );
     }
 
-    private function registerAdapter(int $priority, AdapterInterface $adapter): void
-    {
-        $this->adapters[$priority] = $adapter;
-    }
-
     public function download(string $url): UploadedFile
     {
         $actualUrl = $this->resolveUrl($url);
@@ -111,12 +106,17 @@ final class Downloader
         }
 
         $stream = $this->httpClient->stream($response);
-        $tmpFilename = $this->tmpPath . '/' . uniqid('coding-task-download-', true);
+        $tmpFilename = $this->tmpPath.'/'.uniqid('coding-task-download-', true);
         $this->streamer->streamToFile($stream, $tmpFilename);
         $mime = $this->mimeGuesser->guess($tmpFilename);
         $originalName = $this->filenameResolver->resolveFilename($response, $url);
 
         return new UploadedFile($tmpFilename, $originalName, $mime);
+    }
+
+    private function registerAdapter(int $priority, AdapterInterface $adapter): void
+    {
+        $this->adapters[$priority] = $adapter;
     }
 
     private function resolveUrl(string $url): string

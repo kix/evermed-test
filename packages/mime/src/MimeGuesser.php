@@ -30,10 +30,8 @@ final readonly class MimeGuesser
                 'Could not guess mime type for file "%s"',
                 $filename
             ));
-        } else {
-            $mimeType = 'application/octet-stream';
         }
 
-        return $mimeType;
+        return 'application/octet-stream';
     }
 }

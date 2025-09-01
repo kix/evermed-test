@@ -10,8 +10,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final readonly class FilenameResolver implements FilenameResolverInterface
 {
-    const string HEADER_CONTENT_DISPOSITION = 'content-disposition';
-    const string DEFAULT_FILE_PREFIX = 'downloaded_';
+    public const string HEADER_CONTENT_DISPOSITION = 'content-disposition';
+    public const string DEFAULT_FILE_PREFIX = 'downloaded_';
 
     public function __construct(
         private string $filePrefix = self::DEFAULT_FILE_PREFIX,

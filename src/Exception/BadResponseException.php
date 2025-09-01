@@ -6,7 +6,4 @@ namespace CodingTask\Download\Exception;
 
 use RuntimeException;
 
-final class BadResponseException extends RuntimeException
-{
-
-}
+final class BadResponseException extends RuntimeException {}

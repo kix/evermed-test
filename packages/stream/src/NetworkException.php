@@ -6,7 +6,4 @@ namespace CodingTask\Stream;
 
 use RuntimeException;
 
-final class NetworkException extends RuntimeException
-{
-
-}
+final class NetworkException extends RuntimeException {}

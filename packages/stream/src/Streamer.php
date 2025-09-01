@@ -11,9 +11,7 @@ final readonly class Streamer
 {
     public function __construct(
         private int $sizeLimit = 10_000_000
-    )
-    {
-    }
+    ) {}
 
     public function streamToFile(ResponseStreamInterface $stream, string $filename): void
     {

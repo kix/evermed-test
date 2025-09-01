@@ -9,8 +9,8 @@ use CodingTask\Download\Downloader;
 use CodingTask\Download\Exception\UnsupportedUrlException;
 use CodingTask\Download\Tests\Stub\ExampleAdapter;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 final class DownloaderTest extends TestCase
@@ -19,7 +19,7 @@ final class DownloaderTest extends TestCase
     public function itThrowsForUnsupportedUrls(): void
     {
         $downloader = new Downloader([
-            new ExampleAdapter()
+            new ExampleAdapter(),
         ]);
 
         $this->expectException(UnsupportedUrlException::class);
@@ -36,12 +36,14 @@ final class DownloaderTest extends TestCase
             ->expects($this->once())
             ->method('supports')
             ->with('https://example.com')
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $adapterNotToBeCalled = $this->getMockBuilder(AdapterInterface::class)->getMock();
         $adapterNotToBeCalled
             ->expects($this->never())
-            ->method('supports');
+            ->method('supports')
+        ;
 
         $downloader = new Downloader([
             0 => $adapterNotToBeCalled,
@@ -58,9 +60,9 @@ final class DownloaderTest extends TestCase
         $downloader = Downloader::create();
         $file = $downloader->download('https://github.com/symfony/symfony/raw/refs/heads/7.4/README.md');
 
-        static::assertEquals('text/html', $file->getMimeType());
-        static::assertEquals('README.md', $file->getClientOriginalName());;
-        static::assertStringContainsString(
+        self::assertEquals('text/html', $file->getMimeType());
+        self::assertEquals('README.md', $file->getClientOriginalName());
+        self::assertStringContainsString(
             '[Symfony][1] is a **PHP framework** for web and console applications',
             $file->getContent()
         );

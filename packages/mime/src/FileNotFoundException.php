@@ -6,7 +6,4 @@ namespace CodingTask\Mime;
 
 use OutOfBoundsException;
 
-final class FileNotFoundException extends OutOfBoundsException
-{
-
-}
+final class FileNotFoundException extends OutOfBoundsException {}

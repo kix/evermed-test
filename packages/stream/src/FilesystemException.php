@@ -6,7 +6,4 @@ namespace CodingTask\Stream;
 
 use RuntimeException;
 
-final class FilesystemException extends RuntimeException
-{
-
-}
+final class FilesystemException extends RuntimeException {}

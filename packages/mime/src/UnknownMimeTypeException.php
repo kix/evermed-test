@@ -6,7 +6,4 @@ namespace CodingTask\Mime;
 
 use RuntimeException;
 
-final class UnknownMimeTypeException extends RuntimeException
-{
-
-}
+final class UnknownMimeTypeException extends RuntimeException {}
