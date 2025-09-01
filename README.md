@@ -128,6 +128,53 @@ local filesystem.
 Symfony's `UploadedFile` class requires a MIME type to instantiate. If we're downloading something, we need to figure 
 out the MIME type that needs to be passed in.
 
+### Why did you choose this structure?
+
+A registry accepting download handler implementations is the simplest approach to allow for extensibility in the future.
+The end user is free to provide his own implementation for any third-party service.
+
+### What design patterns did you use and why?
+
+The main pattern used here is the registry pattern used in `Downloader`.
+
+Dependencies of `Downloader` can be injected via the constructor, so that the end user can provide his own 
+implementations.
+
+### How does your solution support future extensibility?
+
+Having the `AdapterInterface` allows any third-party developer to simply pass a new adapter for a different service via
+the `Downloader`'s constructor method.
+
+## Implementation Details
+### How do you handle different URL formats?
+
+The approach I see straight away before writing any code is probably to delegate the URL matching to specific download
+adapter implementations; conflicts might be possible though, so it might make sense to allow the end user pass a list of
+adapters to be used in the exact case. E.g. if there are several implementations for Google Drive, we should allow for
+only one to be actually used to exclude conflicts.
+
+Important note: probably, the simple HTTP adapter should be the fallback option, since HTTP downloads might target any
+non-specific domain. Thus, adapters have to be prioritized by their specificity. If none of the vendor-specific
+adapters have matched the URL, we try the basic adapter as our last chance.
+
+### What's your approach to error handling?
+
+I would probably have a namespaced set of specific exceptions which would be described in the documentation and in
+docblocks.
+
+## Future Considerations
+### How would you add support for Dropbox?
+
+Should be as simple as implementing another adapter class, as long as there are no other limitations or specifics in
+Dropbox's download implementation.
+
+### How would you handle authentication for private files?
+
+Before any code is written and I don't have any details, I can think of a general approach. I would assume that the
+file storages have some way to pass an authentication header somehow along with the download request; the header itself
+would carry a secret of some kind. On a library level, it makes sense for the specific adapter classes to allow passing
+that as a configuration parameter either upon instantiation or after that.
+
 ## Sidenotes
 
 * Symfony's `UploadedFile` class docblock clearly suggests that the class is intended for "files uploaded through a 
