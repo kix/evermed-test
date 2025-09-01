@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-hash": "*",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
@@ -27,11 +27,14 @@
         "symfony/http-foundation": "^5.0|^6.0",
         "symfony/http-kernel": "^5.0|^6.0",
         "symfony/mime": "^5.0|^6.0",
-        "symfony/http-client": "^5.0|^6.0"
+        "symfony/http-client": "^5.0|^6.0",
+        "packages/mime": "*",
+        "packages/stream": "*"
     },
     "suggest": {
         "nyholm/psr7": "PSR-7 implementation"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "CodingTask\\Download\\": "src/"

@@ -1,0 +1,19 @@
+{
+    "name": "packages/mime",
+    "description": "MIME package",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "CodingTask\\Mime\\": "src/"
+        }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "CodingTask\\Mime\\Test\\": "tests/"
+      }
+    },
+    "require": {},
+    "require-dev": {
+      "phpunit/phpunit": "^12.3"
+    }
+}
