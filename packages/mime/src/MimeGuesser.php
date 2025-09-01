@@ -11,6 +11,7 @@ final readonly class MimeGuesser
 {
     public function __construct(
         private MimeTypesInterface $mimeTypes = new MimeTypes(),
+        private bool $strict = true,
     ) {}
 
     public function guess(string $filename): string
@@ -24,11 +25,13 @@ final readonly class MimeGuesser
 
         $mimeType = $this->mimeTypes->guessMimeType($filename);
 
-        if ($mimeType === null) {
+        if ($mimeType === null && $this->strict) {
             throw new UnknownMimeTypeException(sprintf(
                 'Could not guess mime type for file "%s"',
                 $filename
             ));
+        } else {
+            $mimeType = 'application/octet-stream';
         }
 
         return $mimeType;
