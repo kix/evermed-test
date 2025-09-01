@@ -34,7 +34,7 @@ classDiagram
     class Downloader {
         + AdapterInterface[] $adapters
         + download(string $url) UploadedFile
-        + registerAdapter(AdapterInterface $adapter) void
+        + registerAdapter(int $priority, AdapterInterface $adapter) void
     }
 
     class AdapterInterface {
@@ -53,7 +53,13 @@ classDiagram
 ```
 
 ### Overall flow
-
+* `Downloader` is instantiated with adapters passed in via the constructor
+* A URL is passed to the `Downloader`'s `download()` method
+* `Downloader` scans through the available adapters
+  * throwing an `UnsupportedUrlException` when there's no adapter found 
+  * or calling the matched implementation of an `AdapterInterface`
+* `Downloader` calls `AdapterInterface::download()` with the specified URL
+* `Downloader::download()` returns an instance of `UploadedFile` with the path, the original filename and the MIME type
 
 ### Packages
 #### Stream package
